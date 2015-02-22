@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+	<classpathentry kind="lib" path="C:/Users/User/Desktop/Libs/API/spigot-api-1.8-R0.1-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="C:/Users/User/Desktop/Libs/spigot.jar"/>
+	<classpathentry kind="lib" path="C:/Users/User/Desktop/Libs/mysql-5.1.10.jar"/>
+	<classpathentry kind="lib" path="C:/Users/User/Downloads/Vault (2).jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

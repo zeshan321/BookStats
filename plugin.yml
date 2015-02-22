@@ -1,0 +1,7 @@
+name: BookStats
+main: me.Zeshan.BookStats.Main
+version: 1.0
+commands:
+  BookStats:
+    description: Gives book
+    permission: BookStats.getbook
