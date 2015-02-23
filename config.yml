@@ -39,6 +39,10 @@ On Join:
     Give Limit: true
     # Set which slot the book should be put in. If set to 0 it will just add it to the players inventory.
     Slot: 0
+    # Prevent dropping books.
+    Prevent Drop: false
+    # Prevent dragging books or moving book.
+    Prevent Drag: false
 
 # Update BookStat books every time it's opened.
 Update Book: true

@@ -9,6 +9,8 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.meta.BookMeta;
 
@@ -85,6 +87,50 @@ public class Events implements Listener
 
 			if (bm.getAuthor().equalsIgnoreCase(Main.inst().author))
 				player.getInventory().setItemInHand(DataHandler.createBook(player));
+		}
+	}
+	
+	@EventHandler
+	public void onDrop(PlayerDropItemEvent event) {		
+		if (Main.inst().bookDrop) {
+			
+			if (event.getItemDrop() == null) {
+				return;
+			}
+			
+			if (event.getItemDrop().getItemStack().getType() != Material.WRITTEN_BOOK) {
+				return;
+			}
+
+			if (event.getItemDrop().getItemStack().hasItemMeta()) {
+
+				BookMeta bm = (BookMeta) event.getItemDrop().getItemStack().getItemMeta();
+
+				if (bm.getAuthor().equalsIgnoreCase(Main.inst().author))
+					event.setCancelled(true);
+			}
+		}
+	}
+	
+	@EventHandler
+	public void onClick(InventoryClickEvent event) {		
+		if (Main.inst().bookDrop) {
+			
+			if (event.getCurrentItem() == null) {
+				return;
+			}
+			
+			if (event.getCurrentItem().getType() != Material.WRITTEN_BOOK) {
+				return;
+			}
+
+			if (event.getCurrentItem().hasItemMeta()) {
+
+				BookMeta bm = (BookMeta) event.getCurrentItem().getItemMeta();
+
+				if (bm.getAuthor().equalsIgnoreCase(Main.inst().author))
+					event.setCancelled(true);
+			}
 		}
 	}
 }

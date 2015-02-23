@@ -106,7 +106,7 @@ public class DataHandler {
 				.replace("{Mobkills}", String.valueOf(pd.getMobKills()))
 				.replace("{Blocksplaced}", String.valueOf(pd.getPlacedBlocks()))
 				.replace("{Blocksbroken}", String.valueOf(pd.getBrokenBlocks()))
-				.replace("{Balance}", String.valueOf(Vault.getBal(player)))
+				.replace("{Balance}", String.valueOf(Vault.getBal(player))) + " "
 		};
 		bm.setPages(pages);
 		bm.setAuthor(Main.inst().author.replace("{Player}", player.getName()));

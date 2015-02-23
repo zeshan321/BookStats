@@ -35,6 +35,8 @@ public class Main extends JavaPlugin implements Listener {
 	int slot;
 	boolean updateBook;
 	boolean giveLimit;
+	boolean bookMove;
+	boolean bookDrop;
 
 	@Override
 	public void onEnable() {
@@ -74,6 +76,8 @@ public class Main extends JavaPlugin implements Listener {
 		slot = getConfig().getInt("On Join.Slot");
 		updateBook = getConfig().getBoolean("Update Book");
 		giveLimit = getConfig().getBoolean("On Join.Give Limit");
+		bookDrop = getConfig().getBoolean("On Join.Prevent Drop");
+		bookMove = getConfig().getBoolean("On Join.Prevent Drag");
 
 		// Connect
 		if (useMySQL) {
