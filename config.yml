@@ -34,6 +34,8 @@ Book Author: "&aBookStats"
 On Join:
     # Give BookStats on join 
     Give Book: false
+    # Only give one book
+    Give Limit: true
     # Set which slot the book should be put in. If set to 0 it will just add it to the players inventory.
     Slot: 0
 

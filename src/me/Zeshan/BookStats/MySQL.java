@@ -1,6 +1,7 @@
 package me.Zeshan.BookStats;
 
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -32,9 +33,30 @@ public class MySQL {
 		try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance(); 
 			con = DriverManager.getConnection("jdbc:mysql://" + Main.inst().sMySQLAddr + ":" + Main.inst().sMySQLPort + "/" + Main.inst().sMySQLDataBase+ "?user=" + Main.inst().sMySQLUser + "&password=" + Main.inst().sMySQLPass);
-			System.out.println("BookStats: Connected to database!");
 			MySQL.createTable("BookStats", "UUID VARCHAR(36), Kills INT, Death INT, KillStreak INT, BlocksBroken INT, BlocksPlaced INT, MobKills INT");
+			MySQL.alterTable("GiveBook");
+			System.out.println("BookStats: Connected to database!");
 		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void alterTable(String column) {
+		try
+		{
+			DatabaseMetaData md = con.getMetaData();
+			
+			ResultSet rs = md.getColumns(null, null, "BookStats", column);
+			
+			if (rs.next() == false) {
+			String sql = "ALTER TABLE BookStats ADD " + column + " INT(1)";
+			PreparedStatement ps = con.prepareStatement(sql);
+
+			ps.execute(sql);
+			}
+		}
+		catch (SQLException e)
+		{
 			e.printStackTrace();
 		}
 	}
@@ -59,7 +81,7 @@ public class MySQL {
 		try
 		{
 			PlayerData pd = new PlayerData(player);
-			String sql = "UPDATE BookStats SET Kills = ?, Death = ?, KillStreak = ?, BlocksBroken = ?, BlocksPlaced = ?, MobKills = ? WHERE UUID = ?";
+			String sql = "UPDATE BookStats SET Kills = ?, Death = ?, KillStreak = ?, BlocksBroken = ?, BlocksPlaced = ?, MobKills = ?, GiveBook = ? WHERE UUID = ?";
 			PreparedStatement ps = con.prepareStatement(sql);
 
 			ps.setInt(1, pd.getKills());
@@ -68,7 +90,10 @@ public class MySQL {
 			ps.setInt(4, pd.getBrokenBlocks());
 			ps.setInt(5, pd.getPlacedBlocks());
 			ps.setInt(6, pd.getMobKills());
-			ps.setString(7, player.getUniqueId().toString());
+			ps.setInt(7, pd.getGiveBook());
+			
+			
+			ps.setString(8, player.getUniqueId().toString());
 
 			ps.executeUpdate();
 		}

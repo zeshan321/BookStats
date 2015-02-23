@@ -34,18 +34,33 @@ public class PlayerJoin implements Listener
 		} else {
 			DataHandler.loadYMLData(player);
 		}
-
-		if (Main.inst().giveBook) {
-			int slot = Main.inst().slot;
-
-			if (slot == 0) {
-				player.getInventory().addItem(DataHandler.createBook(player));
-			} else {
-				player.getInventory().setItem(slot - 1, DataHandler.createBook(player));
-			}
-		}
+		run(player);
 	}
 
+	public void run(final Player player) {
+		new BukkitRunnable() {  	 
+			public void run() {
+				PlayerData pd = new PlayerData(player);
+				
+				if (Main.inst().giveLimit && pd.canGiveBook() == false) {
+					return;
+				}
+				
+				if (Main.inst().giveBook) {
+					int slot = Main.inst().slot;
+
+					if (slot == 0) {
+						player.getInventory().addItem(DataHandler.createBook(player));
+						pd.setGiveBook(1);
+					} else {
+						player.getInventory().setItem(slot - 1, DataHandler.createBook(player));
+						pd.setGiveBook(1);
+					}
+				}
+			}
+		}.runTaskLater(plugin, 20L);
+	}
+	
 	@EventHandler
 	public void onLeave(PlayerQuitEvent event) {
 		final Player player = event.getPlayer();

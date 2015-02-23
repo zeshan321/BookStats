@@ -28,6 +28,7 @@ public class DataHandler {
 						pd.setBrokenBlocks(MySQL.getValue("BlocksBroken", uuid));
 						pd.setPlacedBlocks(MySQL.getValue("BlocksPlaced", uuid));
 						pd.setMobKills(MySQL.getValue("MobKills", uuid));
+						pd.setGiveBook(MySQL.getValue("GiveBook", uuid));
 					} catch (SQLException e) {
 						e.printStackTrace();
 					}
@@ -49,6 +50,7 @@ public class DataHandler {
 		pd.setBrokenBlocks(pf.getInteger("BlocksBroken"));
 		pd.setBrokenBlocks(pf.getInteger("BlocksPlaced"));
 		pd.setMobKills(pf.getInteger("MobKills"));
+		pd.setGiveBook(pf.getInteger("GiveBook"));
 	}
 
 
@@ -67,6 +69,7 @@ public class DataHandler {
 		pf.set("BlocksBroken", pd.getBrokenBlocks());
 		pf.set("BlocksPlaced", pd.getPlacedBlocks());
 		pf.set("MobKills", pd.getMobKills());
+		pf.set("GiveBook", pd.getGiveBook());
 
 		pf.save(true);
 	}
@@ -82,7 +85,8 @@ public class DataHandler {
 		pf.set("BlocksBroken", pd.getBrokenBlocks());
 		pf.set("BlocksPlaced", pd.getPlacedBlocks());
 		pf.set("MobKills", pd.getMobKills());
-
+		pf.set("GiveBook", pd.getGiveBook());
+		
 		pf.save();
 	}
 

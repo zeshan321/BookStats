@@ -36,6 +36,10 @@ public class PlayerData
 		if (!(map.containsKey(player.getName() + "-MobKills"))) {
 			map.put(player.getName() + "-MobKills", 0);
 		}
+		
+		if (!(map.containsKey(player.getName() + "-GiveBook"))) {
+			map.put(player.getName() + "-GiveBook", 0);
+		}
 	}
 
 	public Player getPlayer() {
@@ -116,5 +120,22 @@ public class PlayerData
 
 	public int getMobKills() {
 		return map.get(player.getName() + "-MobKills");
+	}
+	
+	public void setGiveBook(int i) {
+		map.put(player.getName() + "-GiveBook", i);
+	}
+
+	public boolean canGiveBook() {
+		int i = map.get(player.getName() + "-GiveBook");
+		
+		if (i == 1) {
+			return false;
+		}
+		return true;
+	}
+	
+	public int getGiveBook() {
+		return map.get(player.getName() + "-GiveBook");
 	}
 }
