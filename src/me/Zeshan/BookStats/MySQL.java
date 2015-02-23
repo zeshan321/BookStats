@@ -13,7 +13,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class MySQL {
 	public static Connection con;
-
+	public static String table = Main.inst().sMySQLTable;
+	
 	public static void connect() {
 		new BukkitRunnable()
 		{
@@ -33,7 +34,7 @@ public class MySQL {
 		try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance(); 
 			con = DriverManager.getConnection("jdbc:mysql://" + Main.inst().sMySQLAddr + ":" + Main.inst().sMySQLPort + "/" + Main.inst().sMySQLDataBase+ "?user=" + Main.inst().sMySQLUser + "&password=" + Main.inst().sMySQLPass);
-			MySQL.createTable("BookStats", "UUID VARCHAR(36), Kills INT, Death INT, KillStreak INT, BlocksBroken INT, BlocksPlaced INT, MobKills INT");
+			MySQL.createTable(table, "UUID VARCHAR(36), Kills INT, Death INT, KillStreak INT, BlocksBroken INT, BlocksPlaced INT, MobKills INT");
 			MySQL.alterTable("GiveBook");
 			System.out.println("BookStats: Connected to database!");
 		} catch (Exception e) {
@@ -49,7 +50,7 @@ public class MySQL {
 			ResultSet rs = md.getColumns(null, null, "BookStats", column);
 			
 			if (rs.next() == false) {
-			String sql = "ALTER TABLE BookStats ADD " + column + " INT(1)";
+			String sql = "ALTER TABLE " + table + " ADD " + column + " INT(1)";
 			PreparedStatement ps = con.prepareStatement(sql);
 
 			ps.execute(sql);
@@ -81,7 +82,7 @@ public class MySQL {
 		try
 		{
 			PlayerData pd = new PlayerData(player);
-			String sql = "UPDATE BookStats SET Kills = ?, Death = ?, KillStreak = ?, BlocksBroken = ?, BlocksPlaced = ?, MobKills = ?, GiveBook = ? WHERE UUID = ?";
+			String sql = "UPDATE " + table + " SET Kills = ?, Death = ?, KillStreak = ?, BlocksBroken = ?, BlocksPlaced = ?, MobKills = ?, GiveBook = ? WHERE UUID = ?";
 			PreparedStatement ps = con.prepareStatement(sql);
 
 			ps.setInt(1, pd.getKills());
@@ -115,7 +116,7 @@ public class MySQL {
 					}
 
 					PlayerData pd = new PlayerData(player);
-					String sql = "INSERT INTO BookStats (UUID,Kills,Death,KillStreak,BlocksBroken,BlocksPlaced,MobKills)"
+					String sql = "INSERT INTO "+ table + " (UUID,Kills,Death,KillStreak,BlocksBroken,BlocksPlaced,MobKills)"
 							+ " VALUES (?,?,?,?,?,?,?)";
 
 					PreparedStatement ps = con.prepareStatement(sql);
@@ -146,7 +147,7 @@ public class MySQL {
 					}
 
 					PlayerData pd = new PlayerData(player);
-					String sql = "INSERT INTO BookStats (UUID,Kills,Death,KillStreak,BlocksBroken,BlocksPlaced,MobKills)"
+					String sql = "INSERT INTO " + table + " (UUID,Kills,Death,KillStreak,BlocksBroken,BlocksPlaced,MobKills)"
 							+ " VALUES (?,?,?,?,?,?,?)";
 
 					PreparedStatement ps = con.prepareStatement(sql);
@@ -170,7 +171,7 @@ public class MySQL {
 	public static int getValue(String column, UUID uuid) throws SQLException
 	{
 		int value = 0;
-		String sql = "SELECT * FROM `BookStats` WHERE `UUID` = '" + uuid + "'";
+		String sql = "SELECT * FROM "+ table + " WHERE `UUID` = '" + uuid + "'";
 		PreparedStatement ps = con.prepareStatement(sql);
 
 		ResultSet rs = ps.executeQuery(sql);
@@ -182,7 +183,7 @@ public class MySQL {
 
 	public static boolean doesExist(String uuid) throws SQLException
 	{
-		String sql = "SELECT * FROM `BookStats` WHERE `UUID` = '" + uuid + "'";
+		String sql = "SELECT * FROM " + table + " WHERE `UUID` = '" + uuid + "'";
 		PreparedStatement ps = con.prepareStatement(sql);
 
 		ResultSet rs = ps.executeQuery(sql);

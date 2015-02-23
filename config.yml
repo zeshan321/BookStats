@@ -6,6 +6,7 @@ MySQL:
     User: notroot
     Pass: notmypassword
     Database: BookStats
+    Table: BookStats
 
 # How often BookStats will save data. In minutes.
 Save Interval: 2

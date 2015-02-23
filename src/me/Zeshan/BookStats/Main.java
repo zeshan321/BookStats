@@ -24,6 +24,7 @@ public class Main extends JavaPlugin implements Listener {
 	String sMySQLUser;
 	String sMySQLPass;
 	String sMySQLDataBase;
+	String sMySQLTable;
 
 	String bookData = null;
 	String title = null;
@@ -66,6 +67,7 @@ public class Main extends JavaPlugin implements Listener {
 		sMySQLUser = getConfig().getString("MySQL.User");
 		sMySQLPass = getConfig().getString("MySQL.Pass");
 		sMySQLDataBase = getConfig().getString("MySQL.Database");
+		sMySQLTable = getConfig().getString("MySQL.Table");
 
 		time = getConfig().getInt("Save Interval");
 		giveBook = getConfig().getBoolean("On Join.Give Book");
