@@ -78,7 +78,7 @@ public class PlayerFile {
 					yaml.save(file);
 					map.remove(file.getName());
 				} catch (Exception e) {
-					System.out.println("WoA: Error saving: " + file.getName());
+					System.out.println("BookStats: Error saving: " + file.getName());
 				}
 			}
 		});
