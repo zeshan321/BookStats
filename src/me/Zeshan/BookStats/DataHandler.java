@@ -48,7 +48,7 @@ public class DataHandler {
 		pd.setDeaths(pf.getInteger("Death"));
 		pd.setKillStreak(pf.getInteger("KillStreak"));
 		pd.setBrokenBlocks(pf.getInteger("BlocksBroken"));
-		pd.setBrokenBlocks(pf.getInteger("BlocksPlaced"));
+		pd.setPlacedBlocks(pf.getInteger("BlocksPlaced"));
 		pd.setMobKills(pf.getInteger("MobKills"));
 		pd.setGiveBook(pf.getInteger("GiveBook"));
 	}

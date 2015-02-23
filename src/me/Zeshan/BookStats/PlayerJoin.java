@@ -23,13 +23,7 @@ public class PlayerJoin implements Listener
 		Player player = event.getPlayer();
 
 		if (Main.inst().useMySQL) {
-			try {
-				if (MySQL.doesExist(player.getUniqueId().toString())) {
-					MySQL.createUser(player);
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			MySQL.createUser(player);
 			DataHandler.loadSQLData(player);
 		} else {
 			DataHandler.loadYMLData(player);
@@ -41,11 +35,11 @@ public class PlayerJoin implements Listener
 		new BukkitRunnable() {  	 
 			public void run() {
 				PlayerData pd = new PlayerData(player);
-				
+
 				if (Main.inst().giveLimit && pd.canGiveBook() == false) {
 					return;
 				}
-				
+
 				if (Main.inst().giveBook) {
 					int slot = Main.inst().slot;
 
@@ -60,7 +54,7 @@ public class PlayerJoin implements Listener
 			}
 		}.runTaskLater(plugin, 20L);
 	}
-	
+
 	@EventHandler
 	public void onLeave(PlayerQuitEvent event) {
 		final Player player = event.getPlayer();
@@ -70,10 +64,7 @@ public class PlayerJoin implements Listener
 			{
 				public void run()
 				{
-					if (Main.inst().useMySQL) {
-						DataHandler.saveSQLData(player);
-						return;
-					}
+					DataHandler.saveSQLData(player);
 				}
 			}.runTaskAsynchronously(Main.inst());
 		}
