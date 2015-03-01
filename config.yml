@@ -44,5 +44,15 @@ On Join:
     # Prevent dragging books or moving book.
     Prevent Drag: false
 
+On Death:
+    # Give BookStats on death 
+    Give Book: false
+    # Set which slot the book should be put in. If set to 0 it will just add it to the players inventory.
+    Slot: 0
+   
+# Only will give book if the players inventory does not contain a bookstat book. 
+Book Limit: false
+Book Limit Message: '&4You can only have one book at a time!'
+
 # Update BookStat books every time it's opened.
 Update Book: true

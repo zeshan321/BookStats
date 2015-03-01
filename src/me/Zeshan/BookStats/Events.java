@@ -14,6 +14,8 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.meta.BookMeta;
 
+import Util.InvCheck;
+
 public class Events implements Listener
 {
 	Main plugin;
@@ -37,6 +39,20 @@ public class Events implements Listener
 			pd = new PlayerData(killer);
 			pd.addKills();
 			pd.addKillStreak();
+		}
+		
+		if (Main.inst().giveBookDeath) {
+			if (Main.inst().bookLimit && InvCheck.canGiveBook(player) == false) {
+				player.sendMessage(Main.inst().bookLimitMessage);
+				return;
+			}
+			int slot = Main.inst().slotDeath;
+
+			if (slot == 0) {
+				player.getInventory().addItem(DataHandler.createBook(player));
+			} else {
+				player.getInventory().setItem(slot - 1, DataHandler.createBook(player));
+			}
 		}
 	}
 

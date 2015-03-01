@@ -12,6 +12,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import Util.InvCheck;
 import Util.Vault;
 
 public class Main extends JavaPlugin implements Listener {
@@ -28,7 +29,8 @@ public class Main extends JavaPlugin implements Listener {
 
 	String bookData = null;
 	String title = null;
-	String author = null;
+	String bookLimitMessage = null;
+	public String author = null;
 
 	int time = 0;
 	boolean giveBook;
@@ -37,6 +39,12 @@ public class Main extends JavaPlugin implements Listener {
 	boolean giveLimit;
 	boolean bookMove;
 	boolean bookDrop;
+	
+	boolean bookLimit;
+	
+	//On Death
+	boolean giveBookDeath;
+	int slotDeath;
 
 	@Override
 	public void onEnable() {
@@ -78,6 +86,12 @@ public class Main extends JavaPlugin implements Listener {
 		giveLimit = getConfig().getBoolean("On Join.Give Limit");
 		bookDrop = getConfig().getBoolean("On Join.Prevent Drop");
 		bookMove = getConfig().getBoolean("On Join.Prevent Drag");
+		
+		giveBookDeath = getConfig().getBoolean("On Death.Give Book");
+		slotDeath = getConfig().getInt("On Death.Slot");
+		
+		bookLimit = getConfig().getBoolean("Book Limit"); 
+		bookLimitMessage = getConfig().getString("Book Limit Message").replace("&", "§");
 
 		// Connect
 		if (useMySQL) {
@@ -123,6 +137,11 @@ public class Main extends JavaPlugin implements Listener {
 		if (sender.hasPermission("BookStats.getbook")) {
 			final Player player = (Player) sender;
 
+			if (bookLimit && InvCheck.canGiveBook(player) == false) {
+				player.sendMessage(bookLimitMessage);
+				return true;
+			}
+			
 			player.getInventory().addItem(DataHandler.createBook(player));
 		}
 		return true;
