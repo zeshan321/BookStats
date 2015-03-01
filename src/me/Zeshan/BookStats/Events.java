@@ -43,7 +43,6 @@ public class Events implements Listener
 		
 		if (Main.inst().giveBookDeath) {
 			if (Main.inst().bookLimit && InvCheck.canGiveBook(player) == false) {
-				player.sendMessage(Main.inst().bookLimitMessage);
 				return;
 			}
 			int slot = Main.inst().slotDeath;
