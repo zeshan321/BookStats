@@ -14,8 +14,6 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.meta.BookMeta;
 
-import Util.InvCheck;
-
 public class Events implements Listener
 {
 	Main plugin;
@@ -42,9 +40,6 @@ public class Events implements Listener
 		}
 		
 		if (Main.inst().giveBookDeath) {
-			if (Main.inst().bookLimit && InvCheck.canGiveBook(player) == false) {
-				return;
-			}
 			int slot = Main.inst().slotDeath;
 
 			if (slot == 0) {
