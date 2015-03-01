@@ -45,6 +45,7 @@ public class Main extends JavaPlugin implements Listener {
 	//On Death
 	boolean giveBookDeath;
 	int slotDeath;
+	boolean deathRemove;
 
 	@Override
 	public void onEnable() {
@@ -89,6 +90,7 @@ public class Main extends JavaPlugin implements Listener {
 		
 		giveBookDeath = getConfig().getBoolean("On Death.Give Book");
 		slotDeath = getConfig().getInt("On Death.Slot");
+		deathRemove =  getConfig().getBoolean("On Death.Death Remove");
 		
 		bookLimit = getConfig().getBoolean("Book Limit"); 
 		bookLimitMessage = getConfig().getString("Book Limit Message").replace("&", "§");

@@ -10,8 +10,8 @@ import org.bukkit.inventory.meta.BookMeta;
 public class InvCheck {
 	
 	public static boolean canGiveBook(Player player) {
-		for (ItemStack item: player.getInventory().getContents()) {
-			if (item.getType() == Material.WRITTEN_BOOK) {
+		for (ItemStack item: player.getInventory()) {
+			if (item != null && item.getType() == Material.WRITTEN_BOOK) {
 				if (item.hasItemMeta()) {
 
 					BookMeta bm = (BookMeta) item.getItemMeta();

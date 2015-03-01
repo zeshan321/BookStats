@@ -45,6 +45,8 @@ On Join:
     Prevent Drag: false
 
 On Death:
+    # Remove BookStat book from there dropped items on death.
+    Death Remove: false
     # Give BookStats on death 
     Give Book: false
     # Set which slot the book should be put in. If set to 0 it will just add it to the players inventory.

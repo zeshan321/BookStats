@@ -12,6 +12,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 
 public class Events implements Listener
@@ -39,6 +40,24 @@ public class Events implements Listener
 			pd.addKillStreak();
 		}
 		
+		if (Main.inst().deathRemove) {
+			for (ItemStack item: event.getDrops()) {
+				if (item != null && item.getType() == Material.WRITTEN_BOOK) {
+					if (item.hasItemMeta()) {
+
+						BookMeta bm = (BookMeta) item.getItemMeta();
+
+						if (bm.getAuthor().equalsIgnoreCase(Main.inst().author))
+							event.getDrops().remove(item);
+					}
+				}
+			}
+		}
+	}
+
+	@EventHandler
+	public void onRespawn(PlayerDeathEvent event) {
+		Player player = event.getEntity().getPlayer();
 		if (Main.inst().giveBookDeath) {
 			int slot = Main.inst().slotDeath;
 
@@ -49,7 +68,7 @@ public class Events implements Listener
 			}
 		}
 	}
-
+	
 	@EventHandler
 	public void onPlace(BlockPlaceEvent event) {
 		Player player = event.getPlayer();
