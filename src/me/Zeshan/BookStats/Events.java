@@ -12,6 +12,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 
@@ -56,8 +57,8 @@ public class Events implements Listener
 	}
 
 	@EventHandler
-	public void onRespawn(PlayerDeathEvent event) {
-		Player player = event.getEntity().getPlayer();
+	public void onRespawn(PlayerRespawnEvent event) {
+		Player player = event.getPlayer();
 		if (Main.inst().giveBookDeath) {
 			int slot = Main.inst().slotDeath;
 
