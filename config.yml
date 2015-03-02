@@ -26,7 +26,7 @@ Book:
 - "&1Mob Kills: &4{Mobkills}"
 - " "
 - "&1Block Placed: &4{Blocksplaced}"
-- " "
+- "/p"
 - "&1Block Broken: &4{Blocksbroken}"
 
 Book Title: "&6{Player}'s Stats"

@@ -97,8 +97,7 @@ public class DataHandler {
 		BookMeta bm = (BookMeta)book.getItemMeta();
 
 		String bookData = Main.inst().bookData;
-		String[] pages = {
-				bookData
+		bookData = bookData
 				.replace("{Player}", player.getName())
 				.replace("{Kills}", String.valueOf(pd.getKills()))
 				.replace("{Deaths}", String.valueOf(pd.getDeaths()))
@@ -106,8 +105,8 @@ public class DataHandler {
 				.replace("{Mobkills}", String.valueOf(pd.getMobKills()))
 				.replace("{Blocksplaced}", String.valueOf(pd.getPlacedBlocks()))
 				.replace("{Blocksbroken}", String.valueOf(pd.getBrokenBlocks()))
-				.replace("{Balance}", String.valueOf(Vault.getBal(player))) + " "
-		};
+				.replace("{Balance}", String.valueOf(Vault.getBal(player)));
+		String[] pages = bookData.split("/p");
 		bm.setPages(pages);
 		bm.setAuthor(Main.inst().author.replace("{Player}", player.getName()));
 		bm.setTitle(Main.inst().title.replace("{Player}", player.getName()));
