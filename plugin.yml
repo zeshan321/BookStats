@@ -1,6 +1,6 @@
 name: BookStats
 main: me.Zeshan.BookStats.Main
-version: 1.0
+version: 1.6
 commands:
   BookStats:
     description: Gives book
