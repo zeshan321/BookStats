@@ -1,10 +1,10 @@
 package me.Zeshan.BookStats;
 
-
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
@@ -99,6 +99,10 @@ public class Events implements Listener
 	@EventHandler
 	public void onOpen(PlayerInteractEvent event) {
 		Player player = event.getPlayer();
+		
+		if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) {
+			return;
+		}
 
 		if (Main.inst().updateBook == false) {
 			return;

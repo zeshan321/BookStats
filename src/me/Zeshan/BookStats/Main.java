@@ -12,13 +12,15 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import Util.InvCheck;
-import Util.Vault;
+import net.md_5.bungee.api.ChatColor;
+import util.InvCheck;
+import util.Vault;
 
 public class Main extends JavaPlugin implements Listener {
 
 	public static Main instance;
-
+	public String author = null;
+	
 	boolean useMySQL;
 	String sMySQLAddr;
 	String sMySQLPort;
@@ -30,7 +32,6 @@ public class Main extends JavaPlugin implements Listener {
 	String bookData = null;
 	String title = null;
 	String bookLimitMessage = null;
-	public String author = null;
 
 	int time = 0;
 	boolean giveBook;
@@ -138,13 +139,60 @@ public class Main extends JavaPlugin implements Listener {
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		if (sender.hasPermission("BookStats.getbook")) {
 			final Player player = (Player) sender;
-
-			if (bookLimit && InvCheck.canGiveBook(player) == false) {
-				player.sendMessage(bookLimitMessage);
+			
+			if (args.length > 0 == false) {
+				if (bookLimit && InvCheck.canGiveBook(player) == false) {
+					player.sendMessage(bookLimitMessage);
+					return true;
+				}
+				
+				player.getInventory().addItem(DataHandler.createBook(player));
 				return true;
 			}
-			
-			player.getInventory().addItem(DataHandler.createBook(player));
+
+			if (args[0].equalsIgnoreCase("reload") && sender.hasPermission("BookStats.reload")) {
+				sender.sendMessage(ChatColor.GOLD + "BookStats: Reloading data... MySQL/flat file changes require restart");
+				reloadConfig();
+				
+				// Load book
+				bookData = "";
+				for (String s: getConfig().getStringList("Book")) {
+					if (bookData != null) {
+						bookData = bookData + "\n" + s;
+					} else {
+						bookData = s;
+					}
+				}
+
+				bookData = bookData.replace("&", "§");
+				title = getConfig().getString("Book Title").replace("&", "§");
+				author = getConfig().getString("Book Author").replace("&", "§");
+
+				// MySQL
+				useMySQL = getConfig().getBoolean("MySQL.Use MySQL");
+				sMySQLAddr = getConfig().getString("MySQL.IP Address");
+				sMySQLPort = getConfig().getString("MySQL.Port");
+				sMySQLUser = getConfig().getString("MySQL.User");
+				sMySQLPass = getConfig().getString("MySQL.Pass");
+				sMySQLDataBase = getConfig().getString("MySQL.Database");
+				sMySQLTable = getConfig().getString("MySQL.Table");
+
+				time = getConfig().getInt("Save Interval");
+				giveBook = getConfig().getBoolean("On Join.Give Book");
+				slot = getConfig().getInt("On Join.Slot");
+				updateBook = getConfig().getBoolean("Update Book");
+				giveLimit = getConfig().getBoolean("On Join.Give Limit");
+				bookDrop = getConfig().getBoolean("On Join.Prevent Drop");
+				bookMove = getConfig().getBoolean("On Join.Prevent Drag");
+				
+				giveBookDeath = getConfig().getBoolean("On Death.Give Book");
+				slotDeath = getConfig().getInt("On Death.Slot");
+				deathRemove =  getConfig().getBoolean("On Death.Death Remove");
+				
+				bookLimit = getConfig().getBoolean("Book Limit"); 
+				bookLimitMessage = getConfig().getString("Book Limit Message").replace("&", "§");
+				sender.sendMessage(ChatColor.GOLD + "BookStats: Done reloading!");
+			}
 		}
 		return true;
 	}

@@ -3,13 +3,15 @@ package me.Zeshan.BookStats;
 import java.sql.SQLException;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import Util.Vault;
+import me.clip.placeholderapi.PlaceholderAPI;
+import util.Vault;
 
 public class DataHandler {
 
@@ -73,7 +75,7 @@ public class DataHandler {
 
 		pf.save(true);
 	}
-	
+
 	public static void saveDYMLData(Player player) {
 		PlayerData pd = new PlayerData(player);
 		UUID uuid = player.getUniqueId();
@@ -86,7 +88,7 @@ public class DataHandler {
 		pf.set("BlocksPlaced", pd.getPlacedBlocks());
 		pf.set("MobKills", pd.getMobKills());
 		pf.set("GiveBook", pd.getGiveBook());
-		
+
 		pf.save();
 	}
 
@@ -106,6 +108,11 @@ public class DataHandler {
 				.replace("{Blocksplaced}", String.valueOf(pd.getPlacedBlocks()))
 				.replace("{Blocksbroken}", String.valueOf(pd.getBrokenBlocks()))
 				.replace("{Balance}", String.valueOf(Vault.getBal(player)));
+
+		if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+			bookData = PlaceholderAPI.setPlaceholders(player, bookData);
+		}
+		
 		String[] pages = bookData.split("/p");
 		bm.setPages(pages);
 		bm.setAuthor(Main.inst().author.replace("{Player}", player.getName()));

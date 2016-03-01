@@ -1,4 +1,4 @@
-package Util;
+package util;
 
 import me.Zeshan.BookStats.Main;
 

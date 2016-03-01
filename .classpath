@@ -2,8 +2,9 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
-	<classpathentry kind="lib" path="C:/Users/User/Desktop/Libs/spigot.jar"/>
-	<classpathentry kind="lib" path="C:/Users/User/Desktop/Libs/mysql-5.1.10.jar"/>
-	<classpathentry kind="lib" path="C:/Users/User/Downloads/Vault (2).jar"/>
+	<classpathentry kind="lib" path="C:/Users/zesha/Desktop/BookStats/libs/mysql-5.1.10.jar"/>
+	<classpathentry kind="lib" path="C:/Users/zesha/Desktop/BookStats/libs/spigot-1.9.jar"/>
+	<classpathentry kind="lib" path="C:/Users/zesha/Desktop/BookStats/libs/Vault.jar"/>
+	<classpathentry kind="lib" path="C:/Users/zesha/Desktop/BookStats/libs/PlaceholderAPI.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
