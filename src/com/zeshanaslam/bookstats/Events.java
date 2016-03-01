@@ -1,5 +1,7 @@
 package com.zeshanaslam.bookstats;
 
+import java.util.Iterator;
+
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -42,14 +44,16 @@ public class Events implements Listener
 		}
 		
 		if (Main.inst().deathRemove) {
-			for (ItemStack item: event.getDrops()) {
+			Iterator items = event.getDrops().iterator();
+			while (items.hasNext()) {
+				ItemStack item = (ItemStack) items.next();
 				if (item != null && item.getType() == Material.WRITTEN_BOOK) {
 					if (item.hasItemMeta()) {
 
 						BookMeta bm = (BookMeta) item.getItemMeta();
 
 						if (bm.getAuthor().equalsIgnoreCase(Main.inst().author))
-							event.getDrops().remove(item);
+							items.remove();
 					}
 				}
 			}
