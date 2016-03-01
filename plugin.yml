@@ -1,5 +1,5 @@
 name: BookStats
-main: me.Zeshan.BookStats.Main
+main: com.zeshanaslam.bookstats.Main
 version: 1.6
 commands:
   BookStats:

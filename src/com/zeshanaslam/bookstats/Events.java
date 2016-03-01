@@ -1,4 +1,4 @@
-package me.Zeshan.BookStats;
+package com.zeshanaslam.bookstats;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

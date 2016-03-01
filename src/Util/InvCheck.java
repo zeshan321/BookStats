@@ -1,11 +1,11 @@
 package util;
 
-import me.Zeshan.BookStats.Main;
-
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
+
+import com.zeshanaslam.bookstats.Main;
 
 public class InvCheck {
 	

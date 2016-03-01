@@ -1,4 +1,4 @@
-package me.Zeshan.BookStats;
+package com.zeshanaslam.bookstats;
 
 import java.sql.SQLException;
 import java.util.UUID;

@@ -1,4 +1,4 @@
-package me.Zeshan.BookStats;
+package com.zeshanaslam.bookstats;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
