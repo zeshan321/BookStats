@@ -9,7 +9,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import callbacks.ValuesCallback;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -21,32 +20,26 @@ public class DataHandler {
 		final UUID uuid = player.getUniqueId();
 		final PlayerData pd = new PlayerData(uuid);
 
-		new BukkitRunnable()
-		{
-			public void run()
-			{
-				Main.sql.getValue(uuid, new ValuesCallback() {
+		Main.sql.getValue(uuid, new ValuesCallback() {
 
-					@Override
-					public void onRequestComplete(UUID uuid, ResultSet rs) {
-						try {
-							while(rs.next()) {
-								pd.setKills(rs.getInt("Kills"));
-								pd.setDeaths(rs.getInt("Death"));
-								pd.setKillStreak(rs.getInt("KillStreak"));
-								pd.setBrokenBlocks(rs.getInt("BlocksBroken"));
-								pd.setPlacedBlocks(rs.getInt("BlocksPlaced"));
-								pd.setMobKills(rs.getInt("MobKills"));
-								pd.setGiveBook(rs.getInt("GiveBook"));
-							}
-						} catch (SQLException e) {
-							e.printStackTrace();
-						}
+			@Override
+			public void onRequestComplete(UUID uuid, ResultSet rs) {
+				try {
+					while(rs.next()) {
+						pd.setKills(rs.getInt("Kills"));
+						pd.setDeaths(rs.getInt("Death"));
+						pd.setKillStreak(rs.getInt("KillStreak"));
+						pd.setBrokenBlocks(rs.getInt("BlocksBroken"));
+						pd.setPlacedBlocks(rs.getInt("BlocksPlaced"));
+						pd.setMobKills(rs.getInt("MobKills"));
+						pd.setGiveBook(rs.getInt("GiveBook"));
 					}
-
-				});
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 			}
-		}.runTaskAsynchronously(Main.inst());
+
+		});
 	}
 
 

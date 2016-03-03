@@ -58,13 +58,7 @@ public class PlayerJoin implements Listener
 		final Player player = event.getPlayer();
 
 		if (Main.inst().useMySQL) {
-			new BukkitRunnable()
-			{
-				public void run()
-				{
-					new DataHandler().saveSQLData(player);
-				}
-			}.runTaskAsynchronously(Main.inst());
+			new DataHandler().saveSQLData(player);
 		} else {
 			new DataHandler().saveYMLData(player);
 		}
