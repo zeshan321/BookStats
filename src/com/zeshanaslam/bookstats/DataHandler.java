@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 
+import callbacks.SaveCallback;
 import callbacks.ValuesCallback;
 import me.clip.placeholderapi.PlaceholderAPI;
 import util.Vault;
@@ -62,7 +63,7 @@ public class DataHandler {
 		Main.sql.saveValues(player);
 	}
 
-	public void saveYMLData(Player player) {
+	public void saveYMLData(final Player player) {
 		UUID uuid = player.getUniqueId();
 		PlayerData pd = new PlayerData(uuid);
 		PlayerFile pf = Main.getPlayerYaml(uuid);
@@ -77,7 +78,25 @@ public class DataHandler {
 
 		pf.save(true);
 	}
+	
+	public void saveYMLData(final Player player, final SaveCallback callback) {
+		UUID uuid = player.getUniqueId();
+		PlayerData pd = new PlayerData(uuid);
+		PlayerFile pf = Main.getPlayerYaml(uuid);
 
+		pf.set("Kills", pd.getKills());
+		pf.set("Death", pd.getDeaths());
+		pf.set("KillStreak", pd.getKillStreak());
+		pf.set("BlocksBroken", pd.getBrokenBlocks());
+		pf.set("BlocksPlaced", pd.getPlacedBlocks());
+		pf.set("MobKills", pd.getMobKills());
+		pf.set("GiveBook", pd.getGiveBook());
+
+		pf.save(true);
+
+		callback.onRequestComplete();
+	}
+	
 	public void saveDYMLData(Player player) {
 		UUID uuid = player.getUniqueId();
 		PlayerData pd = new PlayerData(uuid);

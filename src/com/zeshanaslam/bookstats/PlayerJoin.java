@@ -7,6 +7,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import callbacks.SaveCallback;
+
 public class PlayerJoin implements Listener
 {
 	Main plugin;
@@ -56,11 +58,23 @@ public class PlayerJoin implements Listener
 	@EventHandler
 	public void onLeave(PlayerQuitEvent event) {
 		final Player player = event.getPlayer();
-
+		
 		if (Main.inst().useMySQL) {
-			new DataHandler().saveSQLData(player);
+			Main.sql.saveValues(player, new SaveCallback() {
+
+				@Override
+				public void onRequestComplete() {
+					PlayerData.map.remove(player.getUniqueId());
+				}
+			});
 		} else {
-			new DataHandler().saveYMLData(player);
+			new DataHandler().saveYMLData(player, new SaveCallback() {
+
+				@Override
+				public void onRequestComplete() {
+					PlayerData.map.remove(player.getUniqueId());
+				}
+			});
 		}
 	}
 }

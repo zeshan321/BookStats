@@ -11,6 +11,7 @@ import java.util.UUID;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import callbacks.SaveCallback;
 import callbacks.ValuesCallback;
 
 public class MySQL {
@@ -111,6 +112,45 @@ public class MySQL {
 					ps.setString(9, uuid.toString());
 
 					ps.executeUpdate();
+				}
+				catch (SQLException e)
+				{
+					e.printStackTrace();
+				}
+			}
+		}.runTaskAsynchronously(Main.inst());
+	}
+	
+	public void saveValues(final Player player, final SaveCallback callback)
+	{
+		final UUID uuid = player.getUniqueId();
+
+		new BukkitRunnable()
+		{
+			public void run()
+			{
+				try
+				{
+					PlayerData pd = new PlayerData(uuid);
+					String sql = "UPDATE BookStats SET Kills = ?, Death = ?, KillStreak = ?, BlocksBroken = ?, BlocksPlaced = ?, MobKills = ?, GiveBook = ?, Name = ? WHERE UUID = ?";
+					sql = sql.replace("BookStats", table);
+					PreparedStatement ps = con.prepareStatement(sql);
+
+					ps.setInt(1, pd.getKills());
+					ps.setInt(2, pd.getDeaths());
+					ps.setInt(3, pd.getKillStreak());
+					ps.setInt(4, pd.getBrokenBlocks());
+					ps.setInt(5, pd.getPlacedBlocks());
+					ps.setInt(6, pd.getMobKills());
+					ps.setInt(7, pd.getGiveBook());
+					ps.setString(8, player.getName());
+
+
+					ps.setString(9, uuid.toString());
+
+					ps.executeUpdate();
+					
+					callback.onRequestComplete();
 				}
 				catch (SQLException e)
 				{

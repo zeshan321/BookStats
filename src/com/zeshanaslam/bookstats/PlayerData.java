@@ -3,8 +3,6 @@ package com.zeshanaslam.bookstats;
 import java.util.HashMap;
 import java.util.UUID;
 
-import org.bukkit.entity.Player;
-
 import objects.StatsObject;
 
 public class PlayerData
