@@ -1,6 +1,6 @@
 name: BookStats
 main: com.zeshanaslam.bookstats.Main
-version: 1.6
+version: 1.7
 commands:
   BookStats:
     description: Gives book

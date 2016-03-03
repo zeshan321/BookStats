@@ -1,133 +1,154 @@
 package com.zeshanaslam.bookstats;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 import org.bukkit.entity.Player;
 
+import objects.StatsObject;
+
 public class PlayerData
 {
-	private Player player;
-	public static HashMap<String, Integer> map = new HashMap<String, Integer>();
+	public UUID uuid;
+	public static HashMap<UUID, StatsObject> map = new HashMap<UUID, StatsObject>();
 
-	public PlayerData(Player player)
+	public PlayerData(UUID uuid)
 	{
-		this.player = player;
+		this.uuid = uuid;
 		
-		if (!(map.containsKey(player.getName() + "-PK"))) {
-			map.put(player.getName() + "-PK", 0);
-		}
-		
-		if (!(map.containsKey(player.getName() + "-Deaths"))) {
-			map.put(player.getName() + "-Deaths", 0);
-		}
-		
-		if (!(map.containsKey(player.getName() + "-BlocksPlaced"))) {
-			map.put(player.getName() + "-BlocksPlaced", 0);
-		}
-
-		if (!(map.containsKey(player.getName() + "-BlocksBroken"))) {
-			map.put(player.getName() + "-BlocksBroken", 0);
-		}
-		
-		if (!(map.containsKey(player.getName() + "-KillStreak"))) {
-			map.put(player.getName() + "-KillStreak", 0);
-		}
-		
-		if (!(map.containsKey(player.getName() + "-MobKills"))) {
-			map.put(player.getName() + "-MobKills", 0);
-		}
-		
-		if (!(map.containsKey(player.getName() + "-GiveBook"))) {
-			map.put(player.getName() + "-GiveBook", 0);
+		if (!map.containsKey(uuid)) {
+			map.put(uuid, new StatsObject(0, 0, 0, 0, 0, 0, 0));
 		}
 	}
 
-	public Player getPlayer() {
-		return player;
+	public UUID getUUID() {
+		return uuid;
 	}
 
 	public void addDeaths() {
-		map.put(player.getName() + "-Deaths", map.get(player.getName() + "-Deaths") + 1);
+		StatsObject stats = map.get(uuid);
+		stats.deaths++;
+		
+		map.put(uuid, stats);
 	}
 
 	public void setDeaths(int i) {
-		map.put(player.getName() + "-Deaths", i);
+		StatsObject stats = map.get(uuid);
+		stats.deaths = i;
+		
+		map.put(uuid, stats);
 	}
 
 	public int getDeaths() {
-		return map.get(player.getName() + "-Deaths");
+		return map.get(uuid).deaths;
 	}
 
-	public void addKills() {
-		map.put(player.getName() + "-PK", map.get(player.getName() + "-PK") + 1);
+	public void addKills() {		
+		StatsObject stats = map.get(uuid);
+		stats.playerKills++;
+		
+		map.put(uuid, stats);
 	}
 
 	public void setKills(int i) {
-		map.put(player.getName() + "-PK", i);
+		StatsObject stats = map.get(uuid);
+		stats.playerKills = i;
+		
+		map.put(uuid, stats);
 	}
 
 	public int getKills() {
-		return map.get(player.getName() + "-PK");
+		return map.get(uuid).playerKills;
 	}
 
 	public void addPlacedBlocks() {
-		map.put(player.getName() + "-BlocksPlaced", map.get(player.getName() + "-BlocksPlaced") + 1);
+		StatsObject stats = map.get(uuid);
+		stats.blocksPlaced++;
+		
+		map.put(uuid, stats);
 	}
 
 	public void setPlacedBlocks(int i) {
-		map.put(player.getName() + "-BlocksPlaced", i);
+		StatsObject stats = map.get(uuid);
+		stats.blocksPlaced = i;
+		
+		map.put(uuid, stats);
 	}
 
 	public int getPlacedBlocks() {
-		return map.get(player.getName() + "-BlocksPlaced");
+		return map.get(uuid).blocksPlaced;
 	}
 
 	public void addBrokenBlocks() {
-		map.put(player.getName() + "-BlocksBroken", map.get(player.getName() + "-BlocksBroken") + 1);
+		StatsObject stats = map.get(uuid);
+		stats.blocksBroken++;
+		
+		map.put(uuid, stats);
 	}
 
 	public void setBrokenBlocks(int i) {
-		map.put(player.getName() + "-BlocksBroken", i);
+		StatsObject stats = map.get(uuid);
+		stats.blocksBroken = i;
+		
+		map.put(uuid, stats);
 	}
 
 	public int getBrokenBlocks() {
-		return map.get(player.getName() + "-BlocksBroken");
+		return map.get(uuid).blocksBroken;
 	}
 
 	public void addKillStreak() {
-		map.put(player.getName() + "-KillStreak", map.get(player.getName() + "-KillStreak") + 1);
+		StatsObject stats = map.get(uuid);
+		stats.killStreak++;
+		
+		map.put(uuid, stats);
 	}
 
 	public void setKillStreak(int i) {
-		map.put(player.getName() + "-KillStreak", i);
+		StatsObject stats = map.get(uuid);
+		stats.killStreak = i;
+		
+		map.put(uuid, stats);
 	}
 
 	public void resetKillStreak() {
-		map.put(player.getName() + "-KillStreak", 0);
+		StatsObject stats = map.get(uuid);
+		stats.killStreak = 0;
+		
+		map.put(uuid, stats);
 	}
 
 	public int getKillStreak() {
-		return map.get(player.getName() + "-KillStreak");
+		return map.get(uuid).killStreak;
 	}
 
 	public void addMobKills() {
-		map.put(player.getName() + "-MobKills", map.get(player.getName() + "-MobKills") + 1);
+		StatsObject stats = map.get(uuid);
+		stats.mobKills++;
+		
+		map.put(uuid, stats);
 	}
 
 	public void setMobKills(int i) {
-		map.put(player.getName() + "-MobKills", i);
+		StatsObject stats = map.get(uuid);
+		stats.mobKills = i;
+		
+		map.put(uuid, stats);
 	}
 
 	public int getMobKills() {
-		return map.get(player.getName() + "-MobKills");
+		return map.get(uuid).mobKills;
 	}
 	
 	public void setGiveBook(int i) {
-		map.put(player.getName() + "-GiveBook", i);
+		StatsObject stats = map.get(uuid);
+		stats.giveBook = i;
+		
+		map.put(uuid, stats);
 	}
 
 	public boolean canGiveBook() {
-		int i = map.get(player.getName() + "-GiveBook");
+		int i = map.get(uuid).giveBook;
 		
 		if (i == 1) {
 			return false;
@@ -136,6 +157,6 @@ public class PlayerData
 	}
 	
 	public int getGiveBook() {
-		return map.get(player.getName() + "-GiveBook");
+		return map.get(uuid).giveBook;
 	}
 }

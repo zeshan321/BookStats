@@ -1,5 +1,6 @@
 package com.zeshanaslam.bookstats;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
 
@@ -10,40 +11,48 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import callbacks.ValuesCallback;
 import me.clip.placeholderapi.PlaceholderAPI;
 import util.Vault;
 
 public class DataHandler {
 
-	public static void loadSQLData(Player player) {
-		final PlayerData pd = new PlayerData(player);
+	public void loadSQLData(Player player) {
 		final UUID uuid = player.getUniqueId();
+		final PlayerData pd = new PlayerData(uuid);
+
 		new BukkitRunnable()
 		{
 			public void run()
 			{
-				if (Main.inst().useMySQL) {
-					try {
-						pd.setKills(MySQL.getValue("Kills", uuid));
-						pd.setDeaths(MySQL.getValue("Death", uuid));
-						pd.setKillStreak(MySQL.getValue("KillStreak", uuid));
-						pd.setBrokenBlocks(MySQL.getValue("BlocksBroken", uuid));
-						pd.setPlacedBlocks(MySQL.getValue("BlocksPlaced", uuid));
-						pd.setMobKills(MySQL.getValue("MobKills", uuid));
-						pd.setGiveBook(MySQL.getValue("GiveBook", uuid));
-					} catch (SQLException e) {
-						e.printStackTrace();
+				Main.sql.getValue(uuid, new ValuesCallback() {
+
+					@Override
+					public void onRequestComplete(UUID uuid, ResultSet rs) {
+						try {
+							while(rs.next()) {
+								pd.setKills(rs.getInt("Kills"));
+								pd.setDeaths(rs.getInt("Death"));
+								pd.setKillStreak(rs.getInt("KillStreak"));
+								pd.setBrokenBlocks(rs.getInt("BlocksBroken"));
+								pd.setPlacedBlocks(rs.getInt("BlocksPlaced"));
+								pd.setMobKills(rs.getInt("MobKills"));
+								pd.setGiveBook(rs.getInt("GiveBook"));
+							}
+						} catch (SQLException e) {
+							e.printStackTrace();
+						}
 					}
-				}
+
+				});
 			}
 		}.runTaskAsynchronously(Main.inst());
 	}
 
 
-	public static void loadYMLData(Player player) {
-		PlayerData pd = new PlayerData(player);
+	public void loadYMLData(Player player) {
 		UUID uuid = player.getUniqueId();
-
+		PlayerData pd = new PlayerData(uuid);
 		PlayerFile pf = Main.getPlayerYaml(uuid);
 
 		pd.setKills(pf.getInteger("Kills"));
@@ -56,13 +65,13 @@ public class DataHandler {
 	}
 
 
-	public static void saveSQLData(Player player) {
-		MySQL.saveValues(player);
+	public void saveSQLData(Player player) {
+		Main.sql.saveValues(player);
 	}
 
-	public static void saveYMLData(Player player) {
-		PlayerData pd = new PlayerData(player);
+	public void saveYMLData(Player player) {
 		UUID uuid = player.getUniqueId();
+		PlayerData pd = new PlayerData(uuid);
 		PlayerFile pf = Main.getPlayerYaml(uuid);
 
 		pf.set("Kills", pd.getKills());
@@ -76,9 +85,9 @@ public class DataHandler {
 		pf.save(true);
 	}
 
-	public static void saveDYMLData(Player player) {
-		PlayerData pd = new PlayerData(player);
+	public void saveDYMLData(Player player) {
 		UUID uuid = player.getUniqueId();
+		PlayerData pd = new PlayerData(uuid);
 		PlayerFile pf = Main.getPlayerYaml(uuid);
 
 		pf.set("Kills", pd.getKills());
@@ -92,8 +101,9 @@ public class DataHandler {
 		pf.save();
 	}
 
-	public static ItemStack createBook(Player player) {
-		PlayerData pd = new PlayerData(player);
+	public ItemStack createBook(Player player) {
+		UUID uuid = player.getUniqueId();
+		PlayerData pd = new PlayerData(uuid);
 
 		ItemStack book = new ItemStack(Material.WRITTEN_BOOK);
 		BookMeta bm = (BookMeta)book.getItemMeta();
@@ -112,7 +122,7 @@ public class DataHandler {
 		if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
 			bookData = PlaceholderAPI.setPlaceholders(player, bookData);
 		}
-		
+
 		String[] pages = bookData.split("/p");
 		bm.setPages(pages);
 		bm.setAuthor(Main.inst().author.replace("{Player}", player.getName()));

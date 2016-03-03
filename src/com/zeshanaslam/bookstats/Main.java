@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -12,15 +13,15 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import net.md_5.bungee.api.ChatColor;
 import util.InvCheck;
 import util.Vault;
 
 public class Main extends JavaPlugin implements Listener {
 
 	public static Main instance;
+	public static MySQL sql;
 	public String author = null;
-	
+
 	boolean useMySQL;
 	String sMySQLAddr;
 	String sMySQLPort;
@@ -40,9 +41,9 @@ public class Main extends JavaPlugin implements Listener {
 	boolean giveLimit;
 	boolean bookMove;
 	boolean bookDrop;
-	
+
 	boolean bookLimit;
-	
+
 	//On Death
 	boolean giveBookDeath;
 	int slotDeath;
@@ -74,12 +75,14 @@ public class Main extends JavaPlugin implements Listener {
 
 		// MySQL
 		useMySQL = getConfig().getBoolean("MySQL.Use MySQL");
-		sMySQLAddr = getConfig().getString("MySQL.IP Address");
-		sMySQLPort = getConfig().getString("MySQL.Port");
-		sMySQLUser = getConfig().getString("MySQL.User");
-		sMySQLPass = getConfig().getString("MySQL.Pass");
-		sMySQLDataBase = getConfig().getString("MySQL.Database");
-		sMySQLTable = getConfig().getString("MySQL.Table");
+		if (useMySQL) {
+			sMySQLAddr = getConfig().getString("MySQL.IP Address");
+			sMySQLPort = getConfig().getString("MySQL.Port");
+			sMySQLUser = getConfig().getString("MySQL.User");
+			sMySQLPass = getConfig().getString("MySQL.Pass");
+			sMySQLDataBase = getConfig().getString("MySQL.Database");
+			sMySQLTable = getConfig().getString("MySQL.Table");
+		}
 
 		time = getConfig().getInt("Save Interval");
 		giveBook = getConfig().getBoolean("On Join.Give Book");
@@ -88,22 +91,24 @@ public class Main extends JavaPlugin implements Listener {
 		giveLimit = getConfig().getBoolean("On Join.Give Limit");
 		bookDrop = getConfig().getBoolean("On Join.Prevent Drop");
 		bookMove = getConfig().getBoolean("On Join.Prevent Drag");
-		
+
 		giveBookDeath = getConfig().getBoolean("On Death.Give Book");
 		slotDeath = getConfig().getInt("On Death.Slot");
 		deathRemove =  getConfig().getBoolean("On Death.Death Remove");
-		
+
 		bookLimit = getConfig().getBoolean("Book Limit"); 
 		bookLimitMessage = getConfig().getString("Book Limit Message").replace("&", "§");
 
 		// Connect
 		if (useMySQL) {
 			System.out.println("BookStats: Connecting to MySQL..");
-			MySQL.startUp();
+			sql = new MySQL();
+			sql.startUp();
+			autoSave();
 		}
 
 		// Using flat file
-		if (useMySQL == false) {
+		if (!useMySQL) {
 			System.out.println("BookStats: Using flat file!");
 			File usersDir = new File("plugins/BookStats/UserData/");
 			if (!usersDir.exists()) {
@@ -115,15 +120,13 @@ public class Main extends JavaPlugin implements Listener {
 		if (bookData.contains("{Balance}")) {
 			Vault.setupEconomy();
 		}
-
-		autoSave();
 	}
 
 	@Override
 	public void onDisable() {
 		for (Player players: Bukkit.getOnlinePlayers()) {
 			if (useMySQL) {
-				DataHandler.saveSQLData(players);
+				new DataHandler().saveSQLData(players);
 				try {
 					MySQL.con.close();
 				} catch (SQLException e) {
@@ -131,7 +134,7 @@ public class Main extends JavaPlugin implements Listener {
 				}
 				return;
 			}
-			DataHandler.saveDYMLData(players);
+			new DataHandler().saveDYMLData(players);
 		}
 	}
 
@@ -139,21 +142,21 @@ public class Main extends JavaPlugin implements Listener {
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		if (sender.hasPermission("BookStats.getbook")) {
 			final Player player = (Player) sender;
-			
+
 			if (args.length > 0 == false) {
 				if (bookLimit && InvCheck.canGiveBook(player) == false) {
 					player.sendMessage(bookLimitMessage);
 					return true;
 				}
-				
-				player.getInventory().addItem(DataHandler.createBook(player));
+
+				player.getInventory().addItem(new DataHandler().createBook(player));
 				return true;
 			}
 
 			if (args[0].equalsIgnoreCase("reload") && sender.hasPermission("BookStats.reload")) {
 				sender.sendMessage(ChatColor.GOLD + "BookStats: Reloading data... MySQL/flat file changes require restart");
 				reloadConfig();
-				
+
 				// Load book
 				bookData = "";
 				for (String s: getConfig().getStringList("Book")) {
@@ -184,11 +187,11 @@ public class Main extends JavaPlugin implements Listener {
 				giveLimit = getConfig().getBoolean("On Join.Give Limit");
 				bookDrop = getConfig().getBoolean("On Join.Prevent Drop");
 				bookMove = getConfig().getBoolean("On Join.Prevent Drag");
-				
+
 				giveBookDeath = getConfig().getBoolean("On Death.Give Book");
 				slotDeath = getConfig().getInt("On Death.Slot");
 				deathRemove =  getConfig().getBoolean("On Death.Death Remove");
-				
+
 				bookLimit = getConfig().getBoolean("Book Limit"); 
 				bookLimitMessage = getConfig().getString("Book Limit Message").replace("&", "§");
 				sender.sendMessage(ChatColor.GOLD + "BookStats: Done reloading!");
@@ -218,9 +221,9 @@ public class Main extends JavaPlugin implements Listener {
 						{
 							for (Player player: Bukkit.getOnlinePlayers())
 								if (Main.inst().useMySQL) {
-									DataHandler.saveSQLData(player);
+									new DataHandler().saveSQLData(player);
 								} else {
-									DataHandler.saveYMLData(player);
+									new DataHandler().saveYMLData(player);
 								}
 						}
 					}.runTaskAsynchronously(Main.inst());

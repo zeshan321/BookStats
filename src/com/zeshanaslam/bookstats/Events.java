@@ -31,14 +31,14 @@ public class Events implements Listener
 	public void onKillAndDeath(PlayerDeathEvent event) {
 		Player player = (Player) event.getEntity();
 
-		PlayerData pd = new PlayerData(player);
+		PlayerData pd = new PlayerData(player.getUniqueId());
 		pd.addDeaths();
 		pd.resetKillStreak();
 
 		if (event.getEntity().getKiller() instanceof Player) {
 			Player killer = (Player) event.getEntity().getKiller();
 
-			pd = new PlayerData(killer);
+			pd = new PlayerData(killer.getUniqueId());
 			pd.addKills();
 			pd.addKillStreak();
 		}
@@ -67,9 +67,9 @@ public class Events implements Listener
 			int slot = Main.inst().slotDeath;
 
 			if (slot == 0) {
-				player.getInventory().addItem(DataHandler.createBook(player));
+				player.getInventory().addItem(new DataHandler().createBook(player));
 			} else {
-				player.getInventory().setItem(slot - 1, DataHandler.createBook(player));
+				player.getInventory().setItem(slot - 1, new DataHandler().createBook(player));
 			}
 		}
 	}
@@ -78,7 +78,7 @@ public class Events implements Listener
 	public void onPlace(BlockPlaceEvent event) {
 		Player player = event.getPlayer();
 
-		PlayerData pd = new PlayerData(player);
+		PlayerData pd = new PlayerData(player.getUniqueId());
 		pd.addPlacedBlocks();
 	}
 
@@ -86,7 +86,7 @@ public class Events implements Listener
 	public void onBreak(BlockBreakEvent event) {
 		Player player = event.getPlayer();
 
-		PlayerData pd = new PlayerData(player);
+		PlayerData pd = new PlayerData(player.getUniqueId());
 		pd.addBrokenBlocks();
 	}
 
@@ -95,7 +95,7 @@ public class Events implements Listener
 		if (event.getEntity().getKiller() instanceof Player) {
 			Player player = (Player) event.getEntity().getKiller();
 
-			PlayerData pd = new PlayerData(player);
+			PlayerData pd = new PlayerData(player.getUniqueId());
 			pd.addMobKills();
 		}
 	}
@@ -124,7 +124,7 @@ public class Events implements Listener
 			BookMeta bm = (BookMeta) player.getItemInHand().getItemMeta();
 
 			if (bm.getAuthor().equalsIgnoreCase(Main.inst().author))
-				player.getInventory().setItemInHand(DataHandler.createBook(player));
+				player.getInventory().setItemInHand(new DataHandler().createBook(player));
 		}
 	}
 	
