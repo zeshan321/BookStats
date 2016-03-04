@@ -10,6 +10,12 @@ Info: Gives you your stats in a book!
 
 Permission: BookStats.getbook
 
+/BookStats reload
+
+Info: Reloads config.
+
+Permission: BookStats.reload
+
 <h1>Place holders:</h1>
  
 * {Player} gets the players name.
