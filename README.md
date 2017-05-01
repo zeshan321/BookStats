@@ -2,6 +2,8 @@
 
 BookStats allow your players to their in-game stats. They are able to check stats such as Money, Kills, Deaths, Mob Kills, Blocks broken, Blocked placed and much more.
 
+Spigot page: [Click Here](https://www.spigotmc.org/resources/bookstats.4313/)
+
 <h1>Commands:</h1>
 
 /BookStats
